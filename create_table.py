@@ -1,7 +1,6 @@
 import csv
-import psycopg2
-import os
 
+import db_util
 
 COL_TYPE_MAPPINGS = {
     '1': 'VARCHAR',
@@ -10,33 +9,6 @@ COL_TYPE_MAPPINGS = {
     '4': 'DATE',
     '5': 'TIMESTAMP',
 }
-
-
-def get_args():
-    args = {}
-    with open(os.path.join(os.getcwd(), '.config'), 'r') as f:
-        for line in f:
-            l = line.split(':')
-            args[l[0].strip()] = l[1].strip()
-    return args
-
-
-def get_create_table_text(table, columns):
-    col_text = ",\n".join([f""" "{x['name']}" {x['type']} {'PRIMARY KEY' if x['is_primary_key'] else ''}""" for x in columns])
-    sql = f"""CREATE TABLE {table} (
-{col_text});
-"""
-    return sql
-
-
-def create_table(table, columns):
-    conn_args = get_args()
-    sql = get_create_table_text(table, columns)
-    print(sql)
-    with psycopg2.connect(**conn_args) as conn:
-        with conn.cursor() as cursor:
-            cursor.execute(sql)
-            print("Successfully Created Table")
 
 
 def format_name(val):
@@ -116,7 +88,7 @@ Is that Correct? (Y/N)
 """)
         if 'y' in answer.lower():
             print("Great! I'm creating your table.")
-            create_table(table_name, columns)
+            db_util.create_table(table_name, columns)
     else:
         print("Quitting process, re-run to start again.")
         return
