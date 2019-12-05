@@ -1,9 +1,10 @@
+import csv
 import psycopg2
 import os
 
 
 COL_TYPE_MAPPINGS = {
-    '1': 'STRING',
+    '1': 'VARCHAR',
     '2': 'INTEGER',
     '3': 'DECIMAL',
     '4': 'DATE',
@@ -54,9 +55,9 @@ def get_column_name():
 
 def get_column_type(col):
     answer = input(f"""What is the data type for {col}?
-1. String - a sequence of characters (i.e., "jessica", "A234TH9012")
+1. Varchar / String - a sequence of characters (i.e., "jessica", "A234TH9012")
 2. Integer - a whole number (i.e., 1 , 3234235)
-3. Decimal - a number with a decimal point (i.e., 1.0, 5.64)
+3. Numeric / Float - a number with a decimal point (i.e., 1.0, 5.64)
 4. Date - a date without time - this must be formatted YYYY-MM-DD (i.e., '2019-01-01')
 5. Timestamp - a date with time (i.e., 2019-01-01 12:35:15)
 
@@ -69,6 +70,24 @@ Please just enter the number. If you are unsure select 1.
         return get_column_type(col)
 
 
+def get_columns_from_csv():
+    filename = input("Drag and drop the CSV here.\n").strip()
+    with open(filename, 'r') as csvfile:
+        reader = csv.reader(csvfile)
+        column_names = next(reader)
+        print(column_names)
+    columns = []
+    if len([x for x in column_names if len(x) == 0]) > 0:
+        raise Exception('One or more columns does not have a name. Please fix your csv and try again.')
+    if len(set(column_names)) != len(column_names):
+        raise Exception('Column names must be unique. Please fix your csv and try again.')
+    for col in column_names:
+        col_type = get_column_type(col)
+        is_primary_key = 'y' in input(f"Is {col} a primary key? (Y/N)\n").lower()
+        columns.append({'name': col, 'type': col_type, 'is_primary_key': is_primary_key})
+    return columns
+
+
 def main():
     table_name = format_name(input("What is the name of the table you would like to create?\n"))
     columns = []
@@ -76,8 +95,7 @@ def main():
     print("You can enter in column names one by one or upload a CSV for the names")
     answer = input("Would you like to get columns from a CSV? (Y/N)\n")
     if 'y' in answer.lower():
-        pass
-        # get column names from csv
+        columns = get_columns_from_csv()
     else:
         col = get_column_name()
         while col is not None:
