@@ -6,7 +6,7 @@ def main():
     table_name = input("Which table would you like to delete?\n").strip()
     if not db_util.check_table_exists(table_name):
         raise Exception(f"The table {table_name} does not exist.")
-    confirm = input(f"""To Confirm, {table_name} will be deleted permanently. Proceed? (Y/N)""")
+    confirm = input(f"""To Confirm, {table_name} will be deleted permanently. Proceed? (Y/N)\n""")
     if 'n' in confirm.lower():
         print("Canceling Deletion.")
         return

@@ -17,9 +17,9 @@ def main():
 2. Insert Only - Keep all data currently in the table and additionally add CSV data
 3. Upsert - Keep all data in the table, updating records that changed, and adding new data from CSV\n
 """).strip()
-    csv_file = input("Drag and Drop the CSV file here.").strip()
+    csv_file = input("Drag and Drop the CSV file here.\n").strip()
     confirm = input(f"""To Confirm, {table_name} will be updated as {UPDATE_TYPES[update_type]} using {csv_file}.
-Proceed? (Y/N)""")
+Proceed? (Y/N)\n""")
     if 'n' in confirm.lower():
         print("Canceling Update, re-run to try again.")
         return
