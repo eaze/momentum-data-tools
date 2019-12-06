@@ -56,7 +56,7 @@ def get_columns_from_csv():
     for col in column_names:
         col_type = get_column_type(col)
         is_primary_key = 'y' in input(f"Is {col} a primary key? (Y/N)\n").lower()
-        columns.append({'name': col, 'type': col_type, 'is_primary_key': is_primary_key})
+        columns.append({'name': format_name(col), 'type': col_type, 'is_primary_key': is_primary_key})
     return columns
 
 
