@@ -8,7 +8,7 @@ CONFIG_FILE_NAME = '.config'
 
 
 def main():
-    print("\n\n\nLets setup your local machine to connect to your database\n")
+    print("\n\n\nLet's setup your local machine to connect to your database\n")
     print("The first thing we need is the endpoint AWS provided you.\n")
     print("This should be a url that looks something like database-1.123456.us-east-1.rds.amazonaws.com\n\n")
     host = input("Copy and Paste your endpoint and hit enter.\n\n").strip()
