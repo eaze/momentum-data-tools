@@ -80,7 +80,7 @@ def main():
                 is_primary_key = 'y' in input(f"Is {col} a primary key? (Y/N)\n").lower()
                 columns.append({'name': col, 'type': col_type, 'is_primary_key': is_primary_key})
                 col = get_column_name()
-    col_string = '\n'.join([f"{x['name']} - {x['type']}" for x in columns])
+    col_string = '\n'.join([f"{x['name']} - {x['type']} {'- PRIMARY KEY' if x['is_primary_key'] else ''}" for x in columns])
     if len(columns) > 0:
         answer = input(f"""To confirm, you would like to create a table named {table_name} with the following Columns:
 {col_string}
